@@ -23,14 +23,3 @@ export function useOutsideClick<T extends HTMLElement>(callback: () => void) {
     return ref;
 
 }
-export function useSuccessPage(sessionId : string){
-     const resetCart = useStore((state) => state.resetCart);
-  
-    
-
-    useEffect(() => {
-        if(sessionId){
-        resetCart();
-        }
-    }, [sessionId, resetCart])
-}

@@ -1,5 +1,6 @@
 
 import { sanityFetch } from "../lib/live";
+import { client } from "@/sanity/lib/client";
 import { BRANDS_QUERY,
         ORDERS_BY_USER_QUERY,
         LATEST_BLOG_QUERY,
@@ -88,17 +89,19 @@ async function getProductDetailsBrand(slug : string){
     };
 };
 
-async function getOrdersByUser(userId : string){
-    try{
-        const { data } = await sanityFetch({ 
-            query : ORDERS_BY_USER_QUERY , 
-            params : {userId} });
-            return data ?? [];
-    }catch(error){
-        console.log("Error fetching My Orders" , error);
+async function getOrdersByUser(userId: string) {
+    try {
+        const data = await client.fetch(
+            ORDERS_BY_USER_QUERY,
+            { userId },
+            { cache: "no-store" } // ✅ مش بياخد cache
+        );
+        return data ?? [];
+    } catch (error) {
+        console.log("Error fetching My Orders", error);
         return null;
-    };
-};
+    }
+}
 async function getAllBlogs(quantity : number){
     try{
         const { data } = await sanityFetch({ 

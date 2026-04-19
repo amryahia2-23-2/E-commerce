@@ -4,6 +4,7 @@ import { backendClient } from "@/sanity/lib/backendClient";
 import { headers } from "next/headers";
 import { NextRequest } from "next/server";
 import Stripe from "stripe";
+import { revalidatePath } from "next/cache";
 
 // Helper function to update stock levels
 async function updateStockLevels(stockUpdates: { productId: string; quantity: number }[]) {
@@ -118,6 +119,9 @@ async function createOrderInSanity(
     console.log("Updating stock levels...");
     await updateStockLevels(stockUpdates);
     console.log("Stock levels updated");
+
+    revalidatePath("/orders");
+    revalidatePath(`/orders`);
 
     return order;
 }
