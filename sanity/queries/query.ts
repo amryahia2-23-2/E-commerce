@@ -89,11 +89,10 @@ const BRAND_PRODUCT_DETAILS_QUERY = defineQuery(
     }`
 );
  const ORDERS_BY_USER_QUERY = defineQuery(`
-*[_type == "order" && clerkUserId == $userId && !isHidden]
+*[_type == "order" && clerkUserId == $userId && isHidden != true]
 | order(orderDate desc) {
   ...,
   products[]{
-  
     _key,
     quantity,
     product->{
@@ -111,6 +110,7 @@ const BRAND_PRODUCT_DETAILS_QUERY = defineQuery(
   }
 }
 `);
+
 
     
     const SEARCH_PRODUCTS_QUERY = defineQuery(
