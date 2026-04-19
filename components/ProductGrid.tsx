@@ -18,31 +18,45 @@ function ProductGrid() {
   const [selectedTab, setSelectedTab] = useState("all");
 
   useEffect(() => {
-    async function fetchProducts() {
-      setLoading(true);
-      try {
-        const query = `*[
+  async function fetchProducts() {
+    setLoading(true);
+    try {
+      let query: string;
+      let params: Record<string, string> = {};
+
+      if (selectedTab.toLowerCase() === "all") {
+        // No filter — fetch everything
+        query = `*[_type == "product"]{
+          ...,
+          "category": category->{name, slug}
+        }`;
+      } else {
+        // Filter by category slug
+        query = `*[
           _type == "product" &&
-          (
-            $variant == "all" ||
-            !defined($variant) ||
-            category != null && category->slug.current == $variant
-          )
-        ]`;
-
-        const params = { variant: selectedTab.toLowerCase() };
-        const data = await client.fetch(query, params);
-        setProducts(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setProducts([]);
-      } finally {
-        setLoading(false);
+          category->slug.current == $variant
+        ]{
+          ...,
+          "category": category->{name, slug}
+        }`;
+        params = { variant: selectedTab.toLowerCase() };
       }
-    }
 
-    fetchProducts();
-  }, [selectedTab]);
+      const data = await client.fetch(query, params, {
+        cache: "no-store", // ✅ Bypass CDN cache in production
+      });
+
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setProducts([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  fetchProducts();
+}, [selectedTab]);
 
 
   return (
