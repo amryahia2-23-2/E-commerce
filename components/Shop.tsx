@@ -44,16 +44,15 @@ function Shop({ categories, brands }: Props) {
             }
             const query = `
             *[_type == "product"
-                && (!defined($selectedCategory) || references(*[_type == "category" && slug.current == $selectedCategory]._id))
-                && (!defined($selectedBrand) || references(*[_type == "brand" && slug.current == $selectedBrand]._id))
+                && (!defined($selectedCategory) || category->slug.current == $selectedCategory)
+                && (!defined($selectedBrand) || brand->slug.current == $selectedBrand)
                 && price >= $minPrice
                 && price <= $maxPrice
-                ] | order(name asc) {
+                ]
+                | order(name asc){
                 ...,
                 "category": category->name
-                }
-            
-            `;
+                }`;
             const data: Product[] = await client.fetch(query, {
                 selectedCategory,
                 selectedBrand,

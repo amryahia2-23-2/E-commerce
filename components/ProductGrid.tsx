@@ -22,12 +22,13 @@ function ProductGrid() {
       setLoading(true);
       try {
         const query = `*[
-                    _type == "product" &&
-                    ($variant == "all" || category->slug.current == $variant)
-                ]{
-                    ...,
-                    "category": category->{name, slug}
-                }`;
+          _type == "product" &&
+          (
+            $variant == "all" ||
+            !defined($variant) ||
+            category != null && category->slug.current == $variant
+          )
+        ]`;
 
         const params = { variant: selectedTab.toLowerCase() };
         const data = await client.fetch(query, params);
