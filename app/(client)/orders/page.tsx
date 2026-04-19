@@ -10,6 +10,9 @@ import { ORDERS_BY_USER_QUERY_RESULT } from "@/sanity.types";
 
 
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 
 async function OrderPage() {
     

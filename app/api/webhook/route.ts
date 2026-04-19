@@ -120,8 +120,7 @@ async function createOrderInSanity(
     await updateStockLevels(stockUpdates);
     console.log("Stock levels updated");
 
-    revalidatePath("/orders");
-    revalidatePath(`/orders`);
+
 
     return order;
 }
