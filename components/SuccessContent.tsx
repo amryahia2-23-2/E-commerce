@@ -5,9 +5,11 @@ import { useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
 import { Check , Home, Package, ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 
 function SuccessContent() {
+    const router = useRouter();
     const { resetCart } = useStore();
     const searchParams = useSearchParams();
     const sessionId = searchParams.get("session_id");
@@ -16,8 +18,12 @@ function SuccessContent() {
     useEffect(() => {
         if(sessionId){
         resetCart();
+        setTimeout(() => {
+                router.refresh();
+                router.push("/orders");
+            }, 4000);
         }
-    }, [sessionId, resetCart])
+    }, [sessionId, resetCart , router])
 return (
     <div className="py-5 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center mx-4">
         <motion.div 
