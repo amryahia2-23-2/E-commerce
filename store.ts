@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { Product, DEAL_PRODUCT_QUERY_RESULT, SEARCH_PRODUCTS_QUERY_RESULT } from './sanity.types'
+import { Product } from './sanity.types'
 
 // Union type for all product variations from queries
 
@@ -110,7 +110,8 @@ const useStore = create<CartState>()(persist((set, get) => ({
     }
 
 }), {
-    name: 'cart-store'
+    name: 'cart-store',
+    skipHydration: true,
 }))
 
 export default useStore;

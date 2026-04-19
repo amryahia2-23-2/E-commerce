@@ -1,4 +1,7 @@
+import useStore from "@/store";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
+
 
 export function useOutsideClick<T extends HTMLElement>(callback: () => void) {
     const ref = useRef<T>(null);
@@ -19,4 +22,15 @@ export function useOutsideClick<T extends HTMLElement>(callback: () => void) {
 
     return ref;
 
+}
+export function useSuccessPage(sessionId : string){
+     const resetCart = useStore((state) => state.resetCart);
+  
+    
+
+    useEffect(() => {
+        if(sessionId){
+        resetCart();
+        }
+    }, [sessionId, resetCart])
 }
