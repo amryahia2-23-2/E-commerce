@@ -1,7 +1,6 @@
 
 import "./globals.css"
 import { Toaster } from "react-hot-toast"
-import { SanityLive } from "@/sanity/lib/live"
 
 function RootLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -18,7 +17,6 @@ function RootLayout({ children }: { children: React.ReactNode }) {
                     }}
 
                 />
-                <SanityLive />
             </body>
         </html>
     )

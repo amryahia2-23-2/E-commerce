@@ -6,9 +6,5 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: process.env.NODE_ENV === 'production', // Use CDN in production for better performance
-  stega: {
-    enabled: false,
-    studioUrl: '/studio',
-  },
+  useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
 })

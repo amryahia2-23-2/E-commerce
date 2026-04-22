@@ -78,11 +78,8 @@ const DEAL_PRODUCT_QUERY = defineQuery(
 
 const PRODUCT_BY_SLUG_QUERY = defineQuery(
     `*[_type == "product" && slug.current == $slug] | order(name asc) [0]{
-    ...,
-    "category": category->{
-        _id,
-        name
-    }
+    ...,"category": category->name,
+    
     }`
 );
 const BRAND_PRODUCT_DETAILS_QUERY = defineQuery(

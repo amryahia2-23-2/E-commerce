@@ -6,9 +6,9 @@ import { client } from './client'
 
 
 const token = process.env.SANITY_API_READ_TOKEN;
-
+console.log(token)
 if (!token) {
-  console.warn("Warning: 'SANITY_API_READ_TOKEN' is missing. Live preview will not work.");
+  throw new Error("Missing 'SANITY_API_READ_TOKEN'");
 }
 
 export const { sanityFetch, SanityLive } = defineLive({
