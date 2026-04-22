@@ -10,6 +10,10 @@ import { PRODUCT_BY_SLUG_QUERY_RESULT } from '@/sanity.types';
 import { client } from '@/sanity/lib/client';
 import type { Metadata } from 'next';
 
+// Enable static generation with ISR
+export const revalidate = 60; // Revalidate every 60 seconds
+export const dynamicParams = true; // Allow dynamic params not in generateStaticParams
+
 
 
 
@@ -19,15 +23,20 @@ import type { Metadata } from 'next';
 
 // Generate static params for all products
 export async function generateStaticParams() {
-  const products = await client.fetch<Array<{ slug: { current: string } }>>(
-    `*[_type == "product" && defined(slug.current)]{
-      "slug": slug.current
-    }`
-  );
+  try {
+    const products = await client.fetch<Array<{ slug: string }>>(
+      `*[_type == "product" && defined(slug.current)][0...100]{
+        "slug": slug.current
+      }`
+    );
 
-  return products.map((product) => ({
-    slug: product.slug,
-  }));
+    return products.map((product) => ({
+      slug: product.slug,
+    }));
+  } catch (error) {
+    console.error('Error fetching product slugs:', error);
+    return [];
+  }
 }
 
 // Generate metadata for SEO
