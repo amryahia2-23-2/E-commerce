@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Title }from './Text'
 import Link  from 'next/link'
 import { banner_1 } from '@/assests'

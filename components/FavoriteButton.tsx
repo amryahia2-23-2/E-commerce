@@ -2,13 +2,13 @@
 import { Heart } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Product } from '@/sanity.types'
+import { Product, PRODUCT_BY_SLUG_QUERY_RESULT } from '@/sanity.types'
 import useStore from '@/store'
 import toast from 'react-hot-toast'
 import { cn } from '@/lib/utils'
 
 interface Props {
-  product?: Product,
+  product?: Product | PRODUCT_BY_SLUG_QUERY_RESULT,
   showProduct?: boolean,
   className?: string,
 }
@@ -19,7 +19,7 @@ interface Props {
 function FavoriteButton({ product, showProduct = false, className }: Props) {
 
   const { addToFavorite, favoriteProduct } = useStore();
-  const [existingProduct, setExistingProduct] = useState<StoreProduct | null>(null);
+  const [existingProduct, setExistingProduct] = useState<Product | null>(null);
 
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function FavoriteButton({ product, showProduct = false, className }: Props) {
   function handleAddToFavorite(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     if (product?._id) {
-      addToFavorite(product).then(() => {
+      addToFavorite(product as Product).then(() => {
         toast.success(
           existingProduct ? "Product removed from wishlist" : "Product added to wishlist"
         )

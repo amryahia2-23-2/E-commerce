@@ -2,8 +2,6 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { Product } from './sanity.types'
 
-// Union type for all product variations from queries
-
 export interface CartItem {
     product: Product,
     quantity: number
@@ -23,7 +21,6 @@ export interface CartState {
     addToFavorite: (product: Product) => Promise<void>,
     removeFromFavorite: (productId: string) => void,
     resetFavorite: () => void,
-
 }
 
 const useStore = create<CartState>()(persist((set, get) => ({

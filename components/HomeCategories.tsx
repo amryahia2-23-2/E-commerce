@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Title } from './Text'
 import { Category } from '@/sanity.types'
 import { urlFor } from '@/sanity/lib/image';

@@ -1,4 +1,4 @@
-import {  Product } from '@/sanity.types';
+import { Product, DEAL_PRODUCT_QUERY_RESULT, PRODUCT_BY_SLUG_QUERY_RESULT } from '@/sanity.types';
 import { urlFor } from '@/sanity/lib/image';
 import { Flame, StarIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -8,11 +8,12 @@ import AddbuttonWishlist from './AddbuttonWishlist';
 import PriceVeiw from './PriceVeiw';
 import AddToCartBUtton from './AddToCartBUtton';
 
+type ProductCardType = Product | DEAL_PRODUCT_QUERY_RESULT[number] | PRODUCT_BY_SLUG_QUERY_RESULT;
 
 function ProductCard({
     product
 }: {
-    product: Product;
+    product: ProductCardType;
 }) {
     return (
         <div className='text-sm border rounded-md group overflow-hidden'>
@@ -44,11 +45,15 @@ function ProductCard({
                             className='text-shop_orange/50 group-hover:text-shop_orange hoverEffect'
                         />
                     </Link>)}
-                <AddbuttonWishlist product={product} />
+                <AddbuttonWishlist product={product as Product} />
             </div>
             <div className='flex flex-col gap-2 p-4 border border-t'>
                 {product?.category && (
-                    <p className='uppercase line-clamp-1 text-xs text-gray-400'>{product?.category.name}</p>
+                    <p className='uppercase line-clamp-1 text-xs text-gray-400'>
+                        {typeof product.category === 'string'
+                            ? product.category
+                            : product.category?.name}
+                    </p>
 
                 )}
                 <Title className='text-sm md:text-sm mb-0 line-clamp-1'>{product?.name}</Title>
@@ -74,7 +79,7 @@ function ProductCard({
                     discount={product?.discount}
                     className='text-sm'
                 />
-                <AddToCartBUtton product={product} className={'w-36 rounded-full'} />
+                <AddToCartBUtton product={product as Product} className={'w-36 rounded-full'} />
             </div>
         </div>
     )

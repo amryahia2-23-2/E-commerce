@@ -146,7 +146,12 @@ function CartPage() {
                                                             <div className="flex flex-col gap-0.5 md:gap-1.5">
                                                                 <h2 className="txet-base font-semibold line-clamp-1">{product?.name}</h2>
                                                                 <p className="text-sm capitalize">
-                                                                    Variant :{" "} <span className="font-semibold">{product?.category?.name}</span>
+                                                                    Category :{" "}
+                                                                    <span className="font-semibold">
+                                                                        {typeof product?.category === 'string'
+                                                                            ? product?.category
+                                                                            : product?.category?.name}
+                                                                    </span>
                                                                 </p>
                                                                 {product?.status && <p className="text-sm capitalize">
                                                                     Status :{" "} <span className="font-semibold">{product?.status}</span>

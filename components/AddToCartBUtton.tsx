@@ -6,11 +6,11 @@ import useStore from '@/store';
 import toast from 'react-hot-toast';
 import PriceFormater from './PriceFormater';
 import QuantityButton from './QuantityButton';
-import { Product } from '@/sanity.types';
+import { Product, PRODUCT_BY_SLUG_QUERY_RESULT } from '@/sanity.types';
 
 
 interface Props {
-  product: Product;
+  product: Product | PRODUCT_BY_SLUG_QUERY_RESULT;
   className?: string;
 }
 
@@ -21,7 +21,7 @@ function AddToCartBUtton({ product, className }: Props) {
 
   function handleAddToCart() {
     if ((product.stock as number) > itemCount) {
-      addItem(product)
+      addItem(product as Product)
       toast.success(`${product.name?.substring(0, 10)}... added successfully`)
     } else {
       toast.error("Cannot add more than available stock")
@@ -33,7 +33,7 @@ function AddToCartBUtton({ product, className }: Props) {
         <div className='text-sm w-full'>
           <div className='flex items-center justify-between'>
             <span className='text-xs text-darkColor/60'>Quantity</span>
-            <QuantityButton product={product} />
+            <QuantityButton product={product as Product} />
           </div>
           <div className='flex items-center justify-between border-t pt-1'>
             <span>

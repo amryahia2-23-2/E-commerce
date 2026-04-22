@@ -4,10 +4,11 @@ import { cn } from '@/lib/utils';
 import useStore from '@/store';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { Product } from '@/sanity.types';
+import { Product, DEAL_PRODUCT_QUERY_RESULT, PRODUCT_BY_SLUG_QUERY_RESULT } from '@/sanity.types';
 
+type WishlistProductType = Product | DEAL_PRODUCT_QUERY_RESULT[number] | PRODUCT_BY_SLUG_QUERY_RESULT;
 
-function AddbuttonWishlist({ product, className }: { product: Product, className?: string }) {
+function AddbuttonWishlist({ product, className }: { product: WishlistProductType, className?: string }) {
 
   const { addToFavorite, favoriteProduct } = useStore();
   const [existingProduct, setExistingProduct] = useState<Product | null>(null);
@@ -21,7 +22,7 @@ function AddbuttonWishlist({ product, className }: { product: Product, className
   function handleAddToFavorite(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     if (product?._id) {
-      addToFavorite(product).then(() => {
+      addToFavorite(product as Product).then(() => {
         toast.success(
           existingProduct ? "Product removed from wishlist" : "Product added to wishlist"
         )

@@ -1,4 +1,4 @@
-import { Product } from '@/sanity.types';
+import { Product, DEAL_PRODUCT_QUERY_RESULT, PRODUCT_BY_SLUG_QUERY_RESULT } from '@/sanity.types';
 import useStore from '@/store';
 import React from 'react'
 import { Button } from './ui/button';
@@ -6,10 +6,10 @@ import { Minus, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
-
+type QuantityProductType = Product | DEAL_PRODUCT_QUERY_RESULT[number] | PRODUCT_BY_SLUG_QUERY_RESULT;
 
 interface Props {
-    product: Product
+    product: QuantityProductType
     className?: string
 }
 
@@ -29,7 +29,7 @@ function QuantityButton({ product, className }: Props) {
 
     function handleAddProduct() {
         if ((product?.stock as number) > itemCount) {
-            addItem(product);
+            addItem(product as Product);
             toast.success("Quantity increased successfully")
         } else {
             toast.error("Product is out of stock")

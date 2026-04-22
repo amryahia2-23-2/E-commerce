@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
-import React from 'react'
+
 
 function NoProductAvaliable({
     selectedTab,

@@ -15,22 +15,22 @@ export const revalidate = 0;
 
 
 async function OrderPage() {
-    
+
     const { userId } = await auth();
-    
-    if(!userId){
+
+    if (!userId) {
         return redirect("/");
     };
-    
-    const orders: ORDERS_BY_USER_QUERY_RESULT | null = await getOrdersByUser(userId);
-    
 
-    
-return (
+    const orders: ORDERS_BY_USER_QUERY_RESULT = await getOrdersByUser(userId);
+
+
+
+    return (
         <div>
             <Container className="py-10">
                 {orders?.length ? (
-                    <OrdersLayout  orders={orders}/>
+                    <OrdersLayout orders={orders} />
                 ) : (
                     <div className="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ">
                         <FileX className="h-24 w-24 text-gray-400 mb-4" />
@@ -50,7 +50,7 @@ return (
             </Container>
         </div>
     )
-    
+
 
 }
 
