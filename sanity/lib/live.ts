@@ -6,16 +6,16 @@ import { client } from './client'
 
 
 const token = process.env.SANITY_API_READ_TOKEN;
-console.log(token)
+
 if (!token) {
-  throw new Error("Missing 'SANITY_API_READ_TOKEN'");
+  console.warn("Warning: 'SANITY_API_READ_TOKEN' is missing. Live preview will not work.");
 }
 
 export const { sanityFetch, SanityLive } = defineLive({
   client,
   serverToken: token,
   browserToken: token,
-  fetchOptions:{
+  fetchOptions: {
     revalidate: 60,
   },
 });

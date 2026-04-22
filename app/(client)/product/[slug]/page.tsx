@@ -7,7 +7,8 @@ import AddToCartBUtton from '@/components/AddToCartBUtton';
 import FavoriteButton from '@/components/FavoriteButton';
 import ProductCharacteristics from '@/components/ProductCharacteristics';
 import { PRODUCT_BY_SLUG_QUERY_RESULT } from '@/sanity.types';
-;
+import { client } from '@/sanity/lib/client';
+import type { Metadata } from 'next';
 
 
 
@@ -15,6 +16,36 @@ import { PRODUCT_BY_SLUG_QUERY_RESULT } from '@/sanity.types';
 
 
 
+
+// Generate static params for all products
+export async function generateStaticParams() {
+  const products = await client.fetch<Array<{ slug: { current: string } }>>(
+    `*[_type == "product" && defined(slug.current)]{
+      "slug": slug.current
+    }`
+  );
+
+  return products.map((product) => ({
+    slug: product.slug,
+  }));
+}
+
+// Generate metadata for SEO
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const productDetails = await getProductDetails(slug);
+
+  if (!productDetails) {
+    return {
+      title: 'Product Not Found',
+    };
+  }
+
+  return {
+    title: productDetails.name || 'Product Details',
+    description: productDetails.description || 'View product details',
+  };
+}
 
 async function ProductDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
 
@@ -22,7 +53,14 @@ async function ProductDetailsPage({ params }: { params: Promise<{ slug: string }
   const productDetails: PRODUCT_BY_SLUG_QUERY_RESULT | null = await getProductDetails(slug);
 
   if (!productDetails) {
-    return <div>Product not found</div>;
+    return (
+      <Container className='flex items-center justify-center py-20'>
+        <div className='text-center'>
+          <h2 className='text-2xl font-bold mb-4'>Product not found</h2>
+          <p className='text-gray-600'>The product you are looking for does not exist.</p>
+        </div>
+      </Container>
+    );
   }
 
   const isStock = (productDetails?.stock ?? 0) > 0;

@@ -16,10 +16,10 @@ const LATEST_BLOG_QUERY = defineQuery(
             title
             }
         }`
-    
+
 );
 
-const  ALL_BLOGS_QUERY = defineQuery(
+const ALL_BLOGS_QUERY = defineQuery(
     `*[_type == "blogType"] | order(publishedAt desc) {
     ..., 
     blogCategories[]->{
@@ -78,8 +78,11 @@ const DEAL_PRODUCT_QUERY = defineQuery(
 
 const PRODUCT_BY_SLUG_QUERY = defineQuery(
     `*[_type == "product" && slug.current == $slug] | order(name asc) [0]{
-    ...,"category": category->name,
-    
+    ...,
+    "category": category->{
+        _id,
+        name
+    }
     }`
 );
 const BRAND_PRODUCT_DETAILS_QUERY = defineQuery(
@@ -88,7 +91,7 @@ const BRAND_PRODUCT_DETAILS_QUERY = defineQuery(
     
     }`
 );
- const ORDERS_BY_USER_QUERY = defineQuery(`
+const ORDERS_BY_USER_QUERY = defineQuery(`
 *[_type == "order" && clerkUserId == $userId && isHidden != true]
 | order(orderDate desc) {
   ...,
@@ -112,8 +115,8 @@ const BRAND_PRODUCT_DETAILS_QUERY = defineQuery(
 `);
 
 
-    
-    const SEARCH_PRODUCTS_QUERY = defineQuery(
+
+const SEARCH_PRODUCTS_QUERY = defineQuery(
     `*[_type == "product" && name match $searchTerm + "*"] | order(name asc) [0...10] {
         _id,
         name,
@@ -122,7 +125,7 @@ const BRAND_PRODUCT_DETAILS_QUERY = defineQuery(
         images,
         "category": category->name
     }`
-    );  
+);
 
 
 

@@ -12,9 +12,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  typescript:{
-    ignoreBuildErrors: true
-  }
+  typescript: {
+    ignoreBuildErrors: false
+  },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
 };
 
 export default nextConfig;
