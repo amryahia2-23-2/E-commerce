@@ -19,7 +19,7 @@ function ProductCard({
         <div className='text-sm border rounded-md group overflow-hidden'>
             <div className="relative group overflow-hidden bg-white">
                 {product?.images && (
-                    <Link href={`/product/${product?.slug?.current}`}>
+                    <Link href={`/products/${product?.slug?.current}`}>
                         <Image
                             src={urlFor(product.images[0]).url()}
                             loading="lazy"
