@@ -67,18 +67,17 @@ async function getDealProducts() {
 };
 
 async function getProductDetails(slug: string) {
-  try {
-    const data = await client.fetch(
-      PRODUCT_BY_SLUG_QUERY,
-      { slug },
-      { perspective: 'published' }
-    );
-    return data ?? null;
-  } catch (error) {
-    console.log("Error fetching productDetails", error);
-    return null;
-  }
-}
+    try {
+        const { data } = await sanityFetch({
+            query: PRODUCT_BY_SLUG_QUERY,
+            params: { slug }
+        });
+        return data ?? null;
+    } catch (error) {
+        console.log("Error fetching productDetails", error);
+        return null;
+    };
+};
 
 async function getProductDetailsBrand(slug: string) {
     console.log("slug", slug);
